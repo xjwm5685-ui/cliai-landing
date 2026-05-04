@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cliai - 智能终端命令预测</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 使用更具工业感和现代感的字体组合：JetBrains Mono 用于代码，Noto Sans SC 用于正文/标题 -->
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=SF+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('SF Pro Display'), local('-apple-system'), local('BlinkMacSystemFont');
+        }
+        @font-face {
+            font-family: 'SF Mono';
+            src: local('SF Mono'), local('ui-monospace'), local('Menlo'), local('Monaco');
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ambient-light"></div>
+    <div id="three-canvas-container"></div>
+    <canvas id="particle-canvas"></canvas>
+    <div class="grid-bg"></div>
+    <div class="custom-cursor"></div>
+
+    <nav class="navbar glass-panel">
+        <div class="container nav-container">
+            <div class="logo">
+                cliai
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">核心特性</a>
+                <a href="#installation" class="nav-link">快速安装</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/xjwm5685-ui/cliai" target="_blank" class="btn btn-outline">
+                    <span>GitHub</span>
+                </a>
+                <a href="#installation" class="btn btn-primary">
+                    <span>cliai仓库</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content reveal">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    SYSTEM.PREDICT // ONLINE
+                </div>
+                <h1 class="hero-title">
+                    COMMAND THE<br>
+                    <span class="text-glow">FUTURE</span>
+                </h1>
+                <p class="hero-desc">
+                    利用 cliai 加快开发速度。在终端中体验丝滑的实时预测，极速匹配您的自然工作流。
+                </p>
+                <div class="hero-actions">
+                    <a href="#installation" class="btn btn-primary">立即下载</a>
+                    <a href="https://github.com/xjwm5685-ui/cliai" target="_blank" class="btn btn-outline">查阅源码</a>
+                </div>
+            </div>
+
+            <!-- 终端模拟器回到文档流，居中显示 -->
+            <div class="hero-terminal-container reveal delay-1">
+                <div class="terminal-glow-bg"></div>
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="terminal-title">powershell.exe — cliai process</div>
+                        <div class="terminal-controls">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+                        </div>
+                    </div>
+                    <div class="terminal-body" id="terminal-sim">
+                        <div class="term-line">
+                            <span class="prompt">PS D:\sanqiu\workspace></span> 
+                            <span class="typed"></span><span class="prediction"></span><span class="cursor"></span>
+                        </div>
+                    </div>
+                    <div class="terminal-footer">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span>PREDICTION_ENGINE_ACTIVE</span>
+                        </div>
+                        <span class="hint">按 <kbd>Shift</kbd>+<kbd>→</kbd> 或 <kbd>Alt</kbd>+<kbd>f</kbd> 接受预测</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-num">CORE FEATURES</div>
+                <h2>工程化极客体验</h2>
+                <p>拒绝臃肿的 GUI。拒绝频繁的上下文切换。纯粹的终端效率拉满。</p>
+            </div>
+            
+            <div class="bento-grid">
+                <div class="bento-card col-span-2 reveal 3d-box tilt-effect">
+                    <div class="card-bg-pattern"></div>
+                    <div class="card-header">
+                        <div class="card-icon">01_</div>
+                        <h3>实时预测与多平台补全</h3>
+                    </div>
+                    <p>纯正的终端内联预测。在 Windows PowerShell 中体验丝滑灰字预测，在 Linux/macOS 上无缝支持 `zsh`。基于历史工作流推断意图，极具视觉克制力。</p>
+                    <p class="text-muted" style="margin-top: 1rem; font-size: 0.9rem;">预测快捷键：Windows <kbd>Shift</kbd>+<kbd>→</kbd>，Linux/macOS <kbd>Alt</kbd>+<kbd>f</kbd>。</p>
+                    <div class="feature-visual" style="margin-top: 1.5rem;">
+                        <div class="visual-line"><span style="color:var(--accent); font-weight: 600;">PS></span> git st<span style="color:#555555">atus</span></div>
+                    </div>
+                </div>
+                
+                <div class="bento-card reveal delay-1 3d-box tilt-effect">
+                    <div class="card-header">
+                        <div class="card-icon">02_</div>
+                        <h3>上下文感知</h3>
+                    </div>
+                    <p>自动检测当前目录的 <code>Go</code>、<code>Node</code>、<code>Python</code>、<code>Docker</code> 或 <code>Git</code> 环境。根据上下文调整预测结果权重，例如在 Node 目录下更倾向于补全 <code>npm run dev</code>。</p>
+                    <div class="context-visual">
+                        <span class="ctx-tag go">Go</span>
+                        <span class="ctx-tag node">Node</span>
+                        <span class="ctx-tag py">Python</span>
+                        <span class="ctx-tag docker">Docker</span>
+                    </div>
+                </div>
+                
+                <div class="bento-card reveal delay-2 3d-box tilt-effect">
+                    <div class="card-header">
+                        <div class="card-icon">03_</div>
+                        <h3>风险分级与拦截</h3>
+                    </div>
+                    <p>在执行前对命令进行静态风险评估。分为 <code>Safe</code>、<code>Caution</code> 和 <code>Danger</code> 三级，高危命令（如删除、格式化）会被醒目标记，保护你的生产环境。</p>
+                    <div class="risk-visual">
+                        <div class="risk-bar safe"><span>SAFE</span></div>
+                        <div class="risk-bar caution"><span>CAUTION</span></div>
+                        <div class="risk-bar danger"><span>DANGER</span></div>
+                    </div>
+                </div>
+
+                <div class="bento-card col-span-2 cross-platform-card reveal delay-3 3d-box tilt-effect">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <div class="card-icon">04_</div>
+                            <h3>全平台 & 原生包管理</h3>
+                        </div>
+                        <p>跨平台核心，覆盖 Windows、Linux 和 macOS。原生提供各种架构的预编译二进制包，开箱即用，无缝融合进你的自动化配置脚本。</p>
+                    </div>
+                    <div class="os-icons">
+                        <div class="os-icon"><span>Win</span> <span class="arch">PowerShell Script</span></div>
+                        <div class="os-icon"><span>Mac</span> <span class="arch">Intel / Apple Silicon</span></div>
+                        <div class="os-icon"><span>Lin</span> <span class="arch">Script / .deb</span></div>
+                    </div>
+                </div>
+
+                <div class="bento-card reveal delay-1 3d-box tilt-effect">
+                    <div class="card-header">
+                        <div class="card-icon">05_</div>
+                        <h3>个性化反馈学习</h3>
+                    </div>
+                    <p>自动记录你最终接受的命令候选。当你下次输入相似的自然语言时，它会优先推荐你偏好的命令习惯，越用越顺手。</p>
+                    <div class="feedback-visual">
+                        <div class="fb-item">↑ Score +10</div>
+                        <div class="fb-cmd">pnpm run dev</div>
+                    </div>
+                </div>
+
+                <div class="bento-card col-span-2 reveal delay-2 3d-box tilt-effect">
+                    <div class="card-header">
+                        <div class="card-icon">06_</div>
+                        <h3>本地召回 + 智能排序</h3>
+                    </div>
+                    <p>安全可控的架构：完全在本地通过历史记录与上下文生成候选。极速匹配你最常用的命令组合，确保预测结果精准且符合你的个人习惯，绝不凭空捏造高危命令。</p>
+                    <div class="architecture-visual">
+                        <div class="arch-box local">LOCAL HISTORY</div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-box engine">RANK ENGINE</div>
+                        <div class="arch-arrow">↔</div>
+                        <div class="arch-box cloud">CONTEXT MATCH</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="installation" class="installation">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-num">QUICK START</div>
+                <h2>快速安装与部署</h2>
+                <p>秒级接入你的开发环境。选择目标平台开始：</p>
+            </div>
+
+            <div class="install-wrapper reveal delay-1 3d-box">
+                <div class="install-tabs glass-panel">
+                    <button class="tab-btn active" data-target="install-win">
+                        <span class="tab-icon">⊞</span> Windows (PowerShell)
+                    </button>
+                    <button class="tab-btn" data-target="install-apt">
+                        <span class="tab-icon">🐧</span> Debian / Ubuntu
+                    </button>
+                    <button class="tab-btn" data-target="install-mac">
+                        <span class="tab-icon">🍎</span> macOS
+                    </button>
+                </div>
+
+                <div class="install-content-area">
+                    <div class="install-content active" id="install-win">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="lang">powershell</span>
+                                <button class="copy-btn" data-copy="iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex">复制命令</button>
+                            </div>
+                            <pre><code><span class="comment"># 请在 PowerShell 中以管理员身份运行</span>
+iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="install-content" id="install-apt">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="lang">bash</span>
+                                <button class="copy-btn" data-copy="curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash && sudo apt update && sudo apt install -y cliai zsh && cliai shell install zsh && exec zsh">复制命令</button>
+                            </div>
+                            <pre><code><span class="comment"># 一键安装、配置 zsh 环境并启动</span>
+curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash && sudo apt update && sudo apt install -y cliai zsh && cliai shell install zsh && exec zsh</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="install-content" id="install-mac">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="lang">bash (Intel)</span>
+                                <button class="copy-btn" data-copy="mkdir -p ~/cliai-install && cd ~/cliai-install && curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_x86_64.tar.gz && tar -xzf cliai_macOS_x86_64.tar.gz && ./scripts/install-unix.sh && cliai shell install zsh && exec zsh">复制命令</button>
+                            </div>
+                            <pre><code><span class="comment"># Intel Mac 一键下载安装并配置 zsh 环境</span>
+mkdir -p ~/cliai-install && cd ~/cliai-install
+curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_x86_64.tar.gz
+tar -xzf cliai_macOS_x86_64.tar.gz
+./scripts/install-unix.sh
+cliai shell install zsh
+exec zsh</code></pre>
+                        </div>
+                        
+                        <div class="code-block" style="margin-top: 1.5rem;">
+                            <div class="code-header">
+                                <span class="lang">bash (Apple Silicon)</span>
+                                <button class="copy-btn" data-copy="mkdir -p ~/cliai-install && cd ~/cliai-install && curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_ARM64.tar.gz && tar -xzf cliai_macOS_ARM64.tar.gz && ./scripts/install-unix.sh && cliai shell install zsh && exec zsh">复制命令</button>
+                            </div>
+                            <pre><code><span class="comment"># Apple Silicon Mac (M1/M2/M3) 一键下载安装并配置 zsh 环境</span>
+mkdir -p ~/cliai-install && cd ~/cliai-install
+curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_ARM64.tar.gz
+tar -xzf cliai_macOS_ARM64.tar.gz
+./scripts/install-unix.sh
+cliai shell install zsh
+exec zsh</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="manual-install reveal delay-2">
+                <p>或者直接前往 <a href="https://github.com/xjwm5685-ui/cliai/releases" target="_blank" class="hover-underline">GitHub Releases</a> 下载预编译二进制文件。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">
+                        cliai
+                    </div>
+                    <p class="footer-tagline">理解。执行。交付。<br>cliai 是您的智能命令行工程师，可为您独立构建终端预测工作流。</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>资源</h4>
+                        <a href="https://github.com/xjwm5685-ui/cliai" target="_blank">源代码仓库</a>
+                        <a href="https://github.com/xjwm5685-ui/cliai/releases" target="_blank">发行版下载</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>支持</h4>
+                        <a href="https://github.com/xjwm5685-ui/cliai/issues" target="_blank">提交 Issue</a>
+                        <a href="https://github.com/xjwm5685-ui/cliai/blob/main/LICENSE" target="_blank">MIT 协议</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-line"></div>
+                <div class="footer-info">
+                    <p>&copy; 2026 cliai contributors.</p>
+                    <p class="system-status">STATUS: <span class="status-ok">ONLINE</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
