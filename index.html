@@ -204,13 +204,13 @@
             <div class="install-wrapper reveal delay-1 3d-box">
                 <div class="install-tabs glass-panel">
                     <button class="tab-btn active" data-target="install-win">
-                        <span class="tab-icon">⊞</span> Windows (PowerShell)
+                        <span class="tab-icon">⊞</span> Windows
                     </button>
                     <button class="tab-btn" data-target="install-apt">
-                        <span class="tab-icon">🐧</span> Debian / Ubuntu
+                        <span class="tab-icon">🐧</span> Linux (APT)
                     </button>
                     <button class="tab-btn" data-target="install-mac">
-                        <span class="tab-icon">🍎</span> macOS
+                        <span class="tab-icon">🍎</span> macOS / Linux
                     </button>
                 </div>
 
@@ -218,10 +218,20 @@
                     <div class="install-content active" id="install-win">
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="lang">powershell</span>
+                                <span class="lang">powershell (默认完整安装)</span>
                                 <button class="copy-btn" data-copy="iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex">复制命令</button>
                             </div>
-                            <pre><code><span class="comment"># 请在 PowerShell 中以管理员身份运行</span>
+                            <pre><code><span class="comment"># 请在 PowerShell 中运行 (默认完整安装)</span>
+iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex</code></pre>
+                        </div>
+
+                        <div class="code-block" style="margin-top: 1.5rem;">
+                            <div class="code-header">
+                                <span class="lang">powershell (只安装 csg / csi / csc)</span>
+                                <button class="copy-btn" data-copy="$env:CLIAI_SHELL_INTEGRATION = &quot;HelpersOnly&quot;; iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex">复制命令</button>
+                            </div>
+                            <pre><code><span class="comment"># 只安装核心组件 (csg / csi / csc)</span>
+$env:CLIAI_SHELL_INTEGRATION = "HelpersOnly"
 iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 | iex</code></pre>
                         </div>
                     </div>
@@ -230,39 +240,33 @@ iwr -useb https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.ps1 |
                         <div class="code-block">
                             <div class="code-header">
                                 <span class="lang">bash</span>
-                                <button class="copy-btn" data-copy="curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash && sudo apt update && sudo apt install -y cliai zsh && cliai shell install zsh && exec zsh">复制命令</button>
+                                <button class="copy-btn" data-copy="curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | env CLIAI_INSTALL_PACKAGE=1 CLIAI_INSTALL_ZSH=1 CLIAI_ENABLE_ZSH=1 bash&#10;exec zsh">复制命令</button>
                             </div>
-                            <pre><code><span class="comment"># 一键安装、配置 zsh 环境并启动</span>
-curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash && sudo apt update && sudo apt install -y cliai zsh && cliai shell install zsh && exec zsh</code></pre>
+                            <pre><code><span class="comment"># Linux 一步安装 apt 源、 cliai 、 zsh 和 zsh 集成</span>
+curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | \
+  env CLIAI_INSTALL_PACKAGE=1 CLIAI_INSTALL_ZSH=1 CLIAI_ENABLE_ZSH=1 bash
+exec zsh</code></pre>
                         </div>
                     </div>
 
                     <div class="install-content" id="install-mac">
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="lang">bash (Intel)</span>
-                                <button class="copy-btn" data-copy="mkdir -p ~/cliai-install && cd ~/cliai-install && curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_x86_64.tar.gz && tar -xzf cliai_macOS_x86_64.tar.gz && ./scripts/install-unix.sh && cliai shell install zsh && exec zsh">复制命令</button>
+                                <span class="lang">bash (直接装最新 Release)</span>
+                                <button class="copy-btn" data-copy="curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash">复制命令</button>
                             </div>
-                            <pre><code><span class="comment"># Intel Mac 一键下载安装并配置 zsh 环境</span>
-mkdir -p ~/cliai-install && cd ~/cliai-install
-curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_x86_64.tar.gz
-tar -xzf cliai_macOS_x86_64.tar.gz
-./scripts/install-unix.sh
-cliai shell install zsh
-exec zsh</code></pre>
+                            <pre><code><span class="comment"># macOS / Linux 直接装最新 Release</span>
+curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | bash</code></pre>
                         </div>
                         
                         <div class="code-block" style="margin-top: 1.5rem;">
                             <div class="code-header">
-                                <span class="lang">bash (Apple Silicon)</span>
-                                <button class="copy-btn" data-copy="mkdir -p ~/cliai-install && cd ~/cliai-install && curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_ARM64.tar.gz && tar -xzf cliai_macOS_ARM64.tar.gz && ./scripts/install-unix.sh && cliai shell install zsh && exec zsh">复制命令</button>
+                                <span class="lang">bash (一步安装并启用 zsh)</span>
+                                <button class="copy-btn" data-copy="curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | env CLIAI_ENABLE_ZSH=1 bash&#10;exec zsh">复制命令</button>
                             </div>
-                            <pre><code><span class="comment"># Apple Silicon Mac (M1/M2/M3) 一键下载安装并配置 zsh 环境</span>
-mkdir -p ~/cliai-install && cd ~/cliai-install
-curl -LO https://github.com/xjwm5685-ui/cliai/releases/latest/download/cliai_macOS_ARM64.tar.gz
-tar -xzf cliai_macOS_ARM64.tar.gz
-./scripts/install-unix.sh
-cliai shell install zsh
+                            <pre><code><span class="comment"># macOS / Linux 一步安装并启用 zsh</span>
+curl -fsSL https://raw.githubusercontent.com/xjwm5685-ui/cliai/main/install.sh | \
+  env CLIAI_ENABLE_ZSH=1 bash
 exec zsh</code></pre>
                         </div>
                     </div>
